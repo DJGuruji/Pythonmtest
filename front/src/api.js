@@ -67,8 +67,6 @@ export const addStock = async (subvariantId, stock) => {
 
 
 
-
-
 export const removeStock = (id, stock) => {
 
   const accessToken = localStorage.getItem("access");
@@ -83,6 +81,53 @@ export const removeStock = (id, stock) => {
   );
 };
 
+
+
+
+export const getVariants = async () => {
+  try {
+    const accessToken = localStorage.getItem("access");
+    const response = await axios.get(`${API_BASE_URL}/variants/`,{
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching variants:', error);
+    throw error;
+  }
+};
+
+export const addStockToVariant = async (variantId, stock) => {
+  try {
+    const accessToken = localStorage.getItem("access");
+    const response = await axios.post(`${API_BASE_URL}/variants/${variantId}/add_stock/`, { stock },{
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error adding stock to variant:', error);
+    throw error;
+  }
+};
+
+export const removeStockFromVariant = async (variantId, stock) => {
+  try {
+    const accessToken = localStorage.getItem("access");
+    const response = await axios.post(`${API_BASE_URL}/variants/${variantId}/remove_stock/`, { stock },{
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error removing stock from variant:', error);
+    throw error;
+  }
+};
 
 
 

@@ -11,7 +11,6 @@ class Product(models.Model):
     ProductImage = VersatileImageField(upload_to="uploads/", blank=True, null=True)
     CreatedDate = models.DateTimeField(auto_now_add=True)
     UpdatedDate = models.DateTimeField(blank=True, null=True)
-    #CreatedUser = models.ForeignKey("auth.User", related_name="user%(class)s_objects", on_delete=models.CASCADE)
     CreatedUser = models.ForeignKey("auth.User", related_name="user%(class)s_objects", on_delete=models.CASCADE, null=True)
     IsFavourite = models.BooleanField(default=False)
     Active = models.BooleanField(default=True)

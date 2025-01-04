@@ -1,14 +1,16 @@
 from rest_framework import serializers
 from .models import Product, Variant, SubVariant
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-
-
+from datetime import timedelta
+from datetime import datetime
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
+        expiration_time = datetime.utcnow() + timedelta(days=7)
+        token.set_exp(expiration_time.timestamp())
         token["username"] = user.username
         token["email"] = user.email
         return token

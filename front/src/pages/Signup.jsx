@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
-import {toast} from "sonner"
+import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     username: "",
@@ -24,19 +24,24 @@ const navigate = useNavigate();
     setMessage("");
     setError("");
     try {
-      const response = await axios.post("http://localhost:8000/api/signup/", formData);
+      const response = await axios.post(
+        "http://localhost:8000/api/signup/",
+        formData
+      );
       setMessage(response.data.message);
-      toast.success("user creation success")
+      toast.success("user creation success");
       navigate("/");
     } catch (err) {
       setError(err.response?.data?.error || "Something went wrong.");
-      toast.error("Something went wrong.")
+      toast.error("Something went wrong.");
     }
   };
 
   return (
     <div className="max-w-md mx-auto mt-8 p-4 border rounded shadow">
-      <h2 className="text-xl font-bold mb-4">Signup</h2>
+      <h2 className="text-xl font-bold mb-4 text-center text-gray-800 ">
+        Signup
+      </h2>
       {message && <p className="text-green-500">{message}</p>}
       {error && <p className="text-red-500">{error}</p>}
       <form onSubmit={handleSubmit}>
@@ -79,6 +84,13 @@ const navigate = useNavigate();
         >
           Signup
         </button>
+        <p className="p-2">
+          Already have an account?
+          <a className="text-blue-700" onClick={() => navigate("/")}>
+            {" "}
+            Login here{" "}
+          </a>
+        </p>
       </form>
     </div>
   );

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import { addStock } from "../api";
+import { addStockToVariant } from "../api";
 import { toast } from "sonner";
 
-const AddStock = () => {
-  const { subvariantId } = useParams();
+const AddVarientStock = () => {
+  const { variantId } = useParams();
   const [stock, setStock] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -15,20 +15,22 @@ const AddStock = () => {
     setError("");
 
     try {
-      const response = await addStock(subvariantId, stock);
+      const response = await addStockToVariant(variantId, stock);
       toast.success(response.data.message);
     } catch (err) {
-      setError("Failed to add stock");
-      toast.error("Failed to add stock");
+      // setError("Failed to add stock");
+      //toast.error("Failed to add stock");
     } finally {
       setLoading(false);
+      toast.success("success");
+      setStock(0);
     }
   };
 
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg">
       <h2 className="text-2xl font-semibold text-center mb-4">
-        Add Sub Varient Stock
+        Add Varient Stock
       </h2>
       {error && <p className="text-red-500 text-center mb-4">{error}</p>}
       <form onSubmit={handleSubmit}>
@@ -65,4 +67,4 @@ const AddStock = () => {
   );
 };
 
-export default AddStock;
+export default AddVarientStock;
