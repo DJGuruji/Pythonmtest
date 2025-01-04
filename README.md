@@ -39,9 +39,9 @@ python3 manage.py runserver
 
 ```
 
-<img src="https://github.com/DJGuruji/Pythonmtest/blob/main/assets/img1.jpeg?raw=true" alt="Pythonmtest" width="800" height="500">
-<img src="https://github.com/DJGuruji/Pythonmtest/blob/main/assets/img2.jpeg?raw=true" alt="Pythonmtest" width="800" height="500">
-<img src="https://github.com/DJGuruji/Pythonmtest/blob/main/assets/img3.jpeg?raw=true" alt="Pythonmtest" width="800" height="500">
+<img src="https://github.com/DJGuruji/Pythonmtest/blob/main/assets/img1.png?raw=true" alt="Pythonmtest" width="800" height="500">
+<img src="https://github.com/DJGuruji/Pythonmtest/blob/main/assets/img2.png?raw=true" alt="Pythonmtest" width="800" height="500">
+<img src="https://github.com/DJGuruji/Pythonmtest/blob/main/assets/img3.png?raw=true" alt="Pythonmtest" width="800" height="500">
 
 
 
