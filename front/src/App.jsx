@@ -94,17 +94,7 @@ const App = () => {
               >
                 List Product
               </NavLink>
-              <NavLink
-                onClick={handleNavClick}
-                className={({ isActive }) =>
-                  `block md:inline-block m-4 mb-8 ${
-                    isActive ? "underline" : ""
-                  }`
-                }
-                to="/getvarient"
-              >
-                Get Variant
-              </NavLink>
+          
               <NavLink
                 onClick={handleNavClick}
                 className={({ isActive }) =>
@@ -116,17 +106,7 @@ const App = () => {
               >
                 List Variant Stock
               </NavLink>
-              <NavLink
-                onClick={handleNavClick}
-                className={({ isActive }) =>
-                  `block md:inline-block m-4 mb-8 ${
-                    isActive ? "underline" : ""
-                  }`
-                }
-                to="/getsubvarient"
-              >
-                Get Sub Variant
-              </NavLink>
+           
               <NavLink
                 onClick={handleNavClick}
                 className={({ isActive }) =>
@@ -159,10 +139,7 @@ const App = () => {
           path="/createproduct"
           element={user ? <ProductForm /> : <Navigate to="/" />}
         />
-        <Route
-          path="/getsubvarient"
-          element={user ? <GetVarient /> : <Navigate to="/" />}
-        />
+     
         <Route
           path="/listproduct"
           element={user ? <ProductList /> : <Navigate to="/" />}
@@ -179,10 +156,7 @@ const App = () => {
           path="/variant/:variantId/addstock"
           element={user ? <AddVarientStock /> : <Navigate to="/" />}
         />
-        <Route
-          path="/getvarient"
-          element={user ? <GetVarients /> : <Navigate to="/" />}
-        />
+       
         <Route
           path="/listvarientstock"
           element={user ? <ListVarientSTock /> : <Navigate to="/" />}

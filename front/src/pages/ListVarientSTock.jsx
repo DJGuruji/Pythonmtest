@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getVariants, removeStockFromVariant } from "../api";
+import { getVariants, removeStockFromVariant,addStockToVariant } from "../api";
 import { toast } from "sonner";
 
 const ListVarientSTock = () => {
@@ -7,7 +7,9 @@ const ListVarientSTock = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [removeStockValue, setRemoveStockValue] = useState("");
+  const [addStockValue, setAddStockValue] = useState("");
   const [showPopup, setShowPopup] = useState(false);
+  const [showAddStockPopup, setShowAddStockPopup] = useState(false);
 
   useEffect(() => {
     const fetchVariants = async () => {
@@ -45,6 +47,29 @@ const ListVarientSTock = () => {
     }
   };
 
+  const handleAddStock = async () => {
+    if (!addStockValue || isNaN(addStockValue) || addStockValue <= 0) {
+      toast.error("Please enter a valid stock value to add");
+      return;
+    }
+    try {
+      await addStockToVariant(selectedVariant.id, addStockValue);
+      toast.success("Stock added successfully");
+      setVariants((prev) =>
+        prev.map((variant) =>
+          variant.id === selectedVariant.id
+            ? { ...variant, stocks: parseFloat(variant.stocks) + parseFloat(addStockValue) }
+            : variant
+        )
+      );
+      setShowAddStockPopup(false);
+      setAddStockValue("");
+    } catch (err) {
+      toast.error("Failed to add stock");
+      console.error("Error adding stock to variant:", err);
+    }
+  };
+
   const filteredVariants = variants.filter((variant) =>
     variant.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -65,28 +90,20 @@ const ListVarientSTock = () => {
         <table className="w-3/4 table-auto text-sm border-collapse border border-gray-300">
           <thead className="bg-blue-500 text-white">
             <tr>
-              <th className="py-2 px-4 text-left border border-gray-300">
-                Name
-              </th>
-              <th className="py-2 px-4 text-left border border-gray-300">
-                Stock
-              </th>
-              <th className="py-2 px-4 text-left border border-gray-300">
-                Action
-              </th>
+              <th className="py-2 px-4 text-center border border-gray-300">Name</th>
+              <th className="py-2 px-4 text-center border border-gray-300">Stock</th>
+              <th className="py-2 px-4 text-center  border border-gray-300">Action</th>
             </tr>
           </thead>
           <tbody>
             {filteredVariants.length > 0 ? (
               filteredVariants.map((variant) => (
                 <tr key={variant.id} className="border-b hover:bg-gray-50">
-                  <td className="py-2 px-4 border border-gray-300">
-                    {variant.name}
-                  </td>
-                  <td className="py-2 px-4 border border-gray-300">
+                  <td className="py-2 px-4 border text-center border-gray-300">{variant.name}</td>
+                  <td className="py-2 px-4 border text-center border-gray-300">
                     {parseFloat(variant.stocks).toFixed(2)}
                   </td>
-                  <td className="py-2 px-4 border border-gray-300">
+                  <td className="flex justify-center py-2 px-4 border border-gray-300 flex gap-2">
                     <button
                       onClick={() => {
                         setSelectedVariant(variant);
@@ -95,6 +112,15 @@ const ListVarientSTock = () => {
                       className="bg-red-600 text-white hover:bg-red-700 hover:rounded-xl rounded-lg p-2"
                     >
                       Delete Stock
+                    </button>
+                    <button
+                      onClick={() => {
+                        setSelectedVariant(variant);
+                        setShowAddStockPopup(true);
+                      }}
+                      className="bg-green-600 text-white hover:bg-green-700 hover:rounded-xl rounded-lg p-2"
+                    >
+                      Add Stock
                     </button>
                   </td>
                 </tr>
@@ -110,6 +136,7 @@ const ListVarientSTock = () => {
         </table>
       </div>
 
+      {/* Remove Stock Modal */}
       {showPopup && (
         <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
@@ -141,8 +168,42 @@ const ListVarientSTock = () => {
           </div>
         </div>
       )}
+
+      {/* Add Stock Modal */}
+      {showAddStockPopup && (
+        <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
+            <h2 className="text-xl font-bold mb-4">Add Stock</h2>
+            <p className="mb-2">
+              Adding stock to <strong>{selectedVariant.name}</strong>
+            </p>
+            <input
+              type="number"
+              placeholder="Enter stock to add"
+              value={addStockValue}
+              onChange={(e) => setAddStockValue(e.target.value)}
+              className="border border-gray-400 p-2 rounded-md w-full mb-4"
+            />
+            <div className="flex justify-end gap-4">
+              <button
+                onClick={() => setShowAddStockPopup(false)}
+                className="bg-gray-400 text-white rounded-lg px-4 py-2"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleAddStock}
+                className="bg-green-600 text-white rounded-lg px-4 py-2"
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
 
 export default ListVarientSTock;
+
